@@ -1,36 +1,16 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.title});
-
-  final String title;
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings, color: Colors.black),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
+    return SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(24.0),
           child: Column(
@@ -64,26 +44,11 @@ class _HomeScreenState extends State<HomeScreen> {
               _todayLearningTimeCard(),
               SizedBox(height: 24),
               // 目標までの時間
-              _targetLearningTimeCard(),
-              // 画面遷移用バー
+              _targetLearningTimeCard(1.0, 4.0),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'ホーム'),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: '履歴'),
-          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: '報告'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: '設定'),
-        ],
-        currentIndex: 0,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        // NavigationBarタップ処理
-        onTap: (index) {},
-      ),
-    );
+      );
   }
 
   // 時間表示ウィジェット
@@ -156,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // 目標までの時間ウィジェット
-  Widget _targetLearningTimeCard() {
+  Widget _targetLearningTimeCard(double achieved, double total) {
     return Card(
       child: Container(
         padding: const EdgeInsets.all(20.0),
@@ -174,6 +139,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
               ),
+            ),
+            LinearProgressIndicator(
+              value: achieved / total,
+              backgroundColor: Colors.grey[300],
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+              minHeight: 12.0,
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            const SizedBox(height: 8.0),
+            Text(
+              '${achieved}h / ${total}h',
+              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
             ),
           ],
         ),

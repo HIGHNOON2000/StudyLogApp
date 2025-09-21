@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:study_log/presentation/home_screen.dart';
+import 'package:study_log/presentation/shell_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -25,8 +26,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      // アプリの最初の画面を HomeScreen に設定
-      home: const HomeScreen(title: 'Study Log'),
+      // アプリの最初の画面を ShellScreen に設定
+      home: const ShellScreen(),
     );
   }
 }
