@@ -1,54 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:study_log/application/timer_provider.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // timerProviderを購読して変更を検知
+    final timerState = ref.watch(timerProvider);
+    // TimerProviderのインスタンス取得
+    final notifier = ref.read(timerProvider.notifier);
 
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
+    // Durationを時分秒にフォーマット
+    final hours = timerState.duration.inHours.toString().padLeft(2, '0');
+    final minutes = (timerState.duration.inMinutes % 60).toString().padLeft(
+      2,
+      '0',
+    );
+    final seconds = (timerState.duration.inSeconds % 60).toString().padLeft(
+      2,
+      '0',
+    );
+
     return SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // タイマー表示部分
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _timeCard('00', '時'),
-                  _timeCard('00', '分'),
-                  _timeCard('00', '秒'),
-                ],
-              ),
-              SizedBox(height: 48),
-              // 開始ボタン
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  minimumSize: Size(double.infinity, 60),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // タイマー表示部分
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _timeCard(hours, '時'),
+                _timeCard(minutes, '分'),
+                _timeCard(seconds, '秒'),
+              ],
+            ),
+            SizedBox(height: 48),
+            // 開始ボタン
+            ElevatedButton(
+              onPressed: () => notifier.toggleTimer(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                minimumSize: const Size(double.infinity, 60),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
                 ),
-                child: Text('開始'),
               ),
-              SizedBox(height: 24),
-              // 今日の学習時間
-              _todayLearningTimeCard(),
-              SizedBox(height: 24),
-              // 目標までの時間
-              _targetLearningTimeCard(1.0, 4.0),
-            ],
-          ),
+              child: Text(timerState.isRunning ? '停止' : '開始'),
+            ),
+            const SizedBox(height: 24),
+            // 今日の学習時間
+            _todayLearningTimeCard(),
+            const SizedBox(height: 24),
+            // 目標までの時間
+            _targetLearningTimeCard(1.0, 4.0),
+          ],
         ),
-      );
+      ),
+    );
   }
 
   // 時間表示ウィジェット
@@ -73,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         Text(
           label,
           style: TextStyle(
