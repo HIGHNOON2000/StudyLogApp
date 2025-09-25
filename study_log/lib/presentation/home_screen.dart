@@ -54,7 +54,7 @@ class HomeScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 24),
             // 今日の学習時間
-            _todayLearningTimeCard(),
+            _todayLearningTimeCard(hours, minutes, seconds),
             const SizedBox(height: 24),
             // 目標までの時間
             _targetLearningTimeCard(1.0, 4.0),
@@ -100,7 +100,7 @@ class HomeScreen extends ConsumerWidget {
   }
 
   // 今日の学習時間ウィジェット
-  Widget _todayLearningTimeCard() {
+  Widget _todayLearningTimeCard(String hours, String minutes, String seconds) {
     return Card(
       child: Container(
         padding: const EdgeInsets.all(20.0),
@@ -120,7 +120,7 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
             Text(
-              '00時間 00分 00秒',
+              '$hours時間 $minutes分 $seconds秒',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -145,13 +145,26 @@ class HomeScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '本日のゴール',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '本日のゴール',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                Text(
+                  '${(achieved / total * 100).toInt()}%',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+              ],
             ),
             LinearProgressIndicator(
               value: achieved / total,

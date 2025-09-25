@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:study_log/presentation/home_screen.dart';
+import 'package:study_log/presentation/setting_screen.dart';
 
 // 他の画面用のプレースホルダーウィジェット
 class HistoryScreen extends StatelessWidget {
@@ -20,14 +21,6 @@ class ReportScreen extends StatelessWidget {
   }
 }
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('設定画面'));
-  }
-}
-
 // どのタブが選択されているかを管理するProvider
 final selectedIndexProvider = StateProvider<int>((ref) {
   return 0;
@@ -40,13 +33,13 @@ class ShellScreen extends ConsumerWidget {
     HomeScreen(),
     HistoryScreen(),
     ReportScreen(),
-    SettingsScreen(),
+    SettingScreen(),
   ];
 
   static const List<String> _appBarTitles = <String>[
-    'Study Log',
+    'ホーム',
     '履歴',
-    '報告',
+    '分析',
     '設定',
   ];
 
@@ -75,7 +68,7 @@ class ShellScreen extends ConsumerWidget {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'ホーム'),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: '履歴'),
-          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: '報告'),
+          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: '分析'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: '設定'),
         ],
         currentIndex: selectedIndex,
