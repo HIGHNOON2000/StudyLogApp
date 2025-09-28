@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:study_log/application/goal_provider.dart';
 import 'package:study_log/application/timer_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -12,6 +13,8 @@ class HomeScreen extends ConsumerWidget {
     // TimerProviderのインスタンス取得
     final notifier = ref.read(timerProvider.notifier);
 
+    final goalTime = ref.watch(goalTimeProvider);
+
     // Durationを時分秒にフォーマット
     final hours = timerState.duration.inHours.toString().padLeft(2, '0');
     final minutes = (timerState.duration.inMinutes % 60).toString().padLeft(
@@ -22,6 +25,8 @@ class HomeScreen extends ConsumerWidget {
       2,
       '0',
     );
+
+    final achievedInHours = timerState.duration.inSeconds / 3600;
 
     return SingleChildScrollView(
       child: Padding(
@@ -57,7 +62,7 @@ class HomeScreen extends ConsumerWidget {
             _todayLearningTimeCard(hours, minutes, seconds),
             const SizedBox(height: 24),
             // 目標までの時間
-            _targetLearningTimeCard(1.0, 4.0),
+            _targetLearningTimeCard(achievedInHours, goalTime),
           ],
         ),
       ),

@@ -36,12 +36,7 @@ class ShellScreen extends ConsumerWidget {
     SettingScreen(),
   ];
 
-  static const List<String> _appBarTitles = <String>[
-    'ホーム',
-    '履歴',
-    '分析',
-    '設定',
-  ];
+  static const List<String> _appBarTitles = <String>['ホーム', '履歴', '分析', '設定'];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
